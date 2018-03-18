@@ -46,9 +46,8 @@ for u in users: # goes through the users array where u = a single user
             x += 1
         if t == len(root_users):
             if x >= 1:
-                print(u + " became root " + str(x) + " times.")
-#print(users)
-#print(root_users)
+                print(u + " became root " + str(x) + " 
+
 if login == False:
     print("No one became root")
 
