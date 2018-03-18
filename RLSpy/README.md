@@ -1,1 +1,1 @@
-These two scripts work together in order to find out if a user has logged/used su to become root.
+These two scripts work together in order to find out if a user has logged/used su to become root. (NOTE: This program needs work, in the sense that it can only identify users that have logged into root using "su". It does not detect users who have used "sudo bash" or "sudo -i")

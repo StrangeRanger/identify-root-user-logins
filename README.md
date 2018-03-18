@@ -1,4 +1,3 @@
 # monitor
-This repository contains scripts that are used for situations that can be catagorized as "monitor" based.
-(NOTE: Each folder represents a different script/program) 
+This repository contains scripts that are used for situations that can be catagorized as "monitoring". (NOTE: Each folder contains an individual script/program)
 

@@ -1,1 +1,1 @@
-This script is used to see if a users is within the sudo group inside the "/etc/group" file.
+This script is used to see if a user is within the sudo group inside of the "/etc/group" file.
