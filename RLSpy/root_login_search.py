@@ -37,7 +37,6 @@ with open("tmp.txt", "r") as txt:
                     login = True # someone has been detected logging in as root
 
 for u in users: # goes through the users array where u = a single user
-    #pdb.set_trace()
     x = 0 # tallies the total amount of times a single users logged into the root account
     t = 0
     for r in root_users: # goes through the root_users array where r = a single user
@@ -46,11 +45,7 @@ for u in users: # goes through the users array where u = a single user
             x += 1
         if t == len(root_users):
             if x >= 1:
-<<<<<<< HEAD
                 print(u + " became root " + str(x) + " times.")
-=======
-                print(u + " became root " + str(x) + " times.") 
->>>>>>> 3c6ddde1276aa29b505a7cbb3416108666534b9f
 
 if login == False:
     print("No one became root")
