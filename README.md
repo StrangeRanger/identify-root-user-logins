@@ -1,2 +1,4 @@
 # monitor
-Script that are made to monitor or check on things...
+This repository contains scripts that are used for situations that can be catagorized as "monitor" based.
+(NOTE: Each folder represents a different script/program) 
+
