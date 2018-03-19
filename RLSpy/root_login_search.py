@@ -1,4 +1,3 @@
-import pdb
 import re
 import datetime
 from itertools import islice
@@ -37,7 +36,7 @@ with open("tmp.txt", "r") as txt:
                 if word + "\n" in users:
                     root_users.append(word)
                     login = True # someone has been detected logging in as root
-                    break # this break is placed here to prevent accidental miscount of times a user logged into the root account. it also prevents users who did not log in as root to be flasely tagged.
+                    break # this break is placed here to prevent accidental miscount of times a user logged into the root account. it also prevents users who did not log in as root to be falsely tagged.
 
 for u in users: # goes through the users array where u = a single user
     x = 0 # tallies the total amount of times a single users logged into the root account
