@@ -1,6 +1,6 @@
 These two scripts work together in order to find out if a user has logged/used su to become root.
 
-Additional Security Notes:
+Security Features/Notes:
 - Say a user, let's call him Bob, wants to log into the root account but does not want anyone to know that is was him. If he executed "sudo su <another user>", becoming a different user on the system, then logged in as root, Bob would still be flagged. But if Bob used "sudo -i", the user he had logged into, would be flagged instead.
 
 Program Notes/Falts:
