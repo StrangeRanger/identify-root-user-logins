@@ -51,10 +51,10 @@ def root_users():
                 x += 1
             if t == len(root_users):
                 if x >= 1:
-                    print("   " + u + "    became root " + str(x) + " times.")
+                    print("    " + u + "     became root " + str(x) + " times.")
     
     if login == False:
-        print("   No one became root")
+        print("    No one became root")
     
     os.remove("users") # removes file users
     os.remove("tmp.txt") # removes file tmp.txt
