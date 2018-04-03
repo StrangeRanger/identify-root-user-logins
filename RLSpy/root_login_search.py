@@ -4,7 +4,8 @@ from itertools import islice
 import subprocess
 import os
 
-N = 7 
+N = 8 # determines number of days ago, -1, that will be scanned through in auth.log (Current day: March 29, variable: 8, will look at logs taken on March 22 through March 29)
+
 def root_users():
     N_days_ago = datetime.now() - timedelta(days=N) # determines what days in the auth.log will be scanned, starting from 7 to 0 days prior to the current day 
     # the two lines below changes date to unix/linux format(e.g. March  1 "or" March 20)
@@ -59,7 +60,7 @@ def root_users():
     os.remove("users")
     os.remove("tmp.txt")
 
-for i in range(7):
+for i in range(N):
     N -= 1 # every time root_users() has gone through its course, one date earlier in auth.log will be scanned (May 7th will be scanned, next May 8th will be scanned, etc.)
     root_users()
 
