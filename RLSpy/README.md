@@ -1,3 +1,5 @@
+-Version 1.3-
+
 These two scripts work together in order to find out if a user has logged in as root.
 
 Important Notes:
