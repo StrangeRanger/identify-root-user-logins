@@ -54,7 +54,7 @@ def root_users():
                 if x >= 1:
                     print("    " + u + "     became root " + str(x) + " times.")
     
-    if login == False:
+    if not login:
         print("    No one became root")
     
     os.remove("users")
