@@ -6,7 +6,9 @@ import os
 
 N = 7 # determines number of days ago, -1, that will be scanned through in auth.log (Current day: March 29, variable: 8, will look at logs taken on March 22 through March 29)
 
-def root_users():
+subprocess.call("./users.sh") # calls to and executes users.sh
+
+def identify_users():
     N_days_ago = datetime.now() - timedelta(days=N) # determines what days in the auth.log will be scanned, starting from 7 to 0 days prior to the current day 
     # the two lines below changes date to unix/linux format(e.g. March  1 "or" March 20)
     date2 = N_days_ago.strftime("%b  %-d")
@@ -22,8 +24,6 @@ def root_users():
                 if re.match("^.+COMMAND=/bin/bash$", line): # this will identify users who use "sudo bash" and "sudo -i"
                     tmp.writelines(line)
     tmp.close()
-    
-    subprocess.call("./users.sh") # calls to and executes users.sh
     
     users = [] # a list/array of all known users on the system
     with open("users", "r") as txt: # places all users that are in the users file into the users array
@@ -57,10 +57,11 @@ def root_users():
     if not login:
         print("    No one became root")
     
-    os.remove("users")
     os.remove("tmp.txt")
 
 for i in range(N):
     N -= 1 # every time root_users() has gone through its course, one date earlier in auth.log will be scanned (May 7th will be scanned, next May 8th will be scanned, etc.)
-    root_users()
+    identify_users()
+
+os.remove("users")
 
