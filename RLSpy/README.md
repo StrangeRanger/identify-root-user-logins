@@ -5,8 +5,8 @@ Important Notes:
 
 
 Security Features/Notes:
-- If a user, user1, executed "sudo su *{username}*", becoming a different user on the system, then logged in as root, he or she would still be flagged. But if user1 used `sudo -i`, the user he or she had logged into, would be flagged instead.
+- If a user, user1, executed "sudo su {username}", becoming a different user on the system, then logged in as root, he or she would still be flagged. But if user1 used `sudo -i`, the user he or she had logged into, would be flagged instead.
 - The auth.log will be scanned up to 7 days worth of logs, unless user manually changes the number of days within the main script.
 
 Program Notes/Faults:
-- On some flavors of Linux, if not all, the necesary information to identify a user who logged in as root will not show up. The specific problem lies in a sentence that contains the username: "session opened for user root by *{username}*(uid=0)". Sometimes the username will not show up and the sentence will look like this: "session opened for user root by (uid=0)". Therefore the user cannot be identified. This problem only occures at times when `sudo su` is used in combination with a gui terminal. If one of the two is not used, this problem does not occure. In this instance, a gui terminal does not include times when remotely connecting to a server via ssh, or when using a headless/non-gui system: tty1.
+- On some flavors of Linux, if not all, the necesary information to identify a user who logged in as root will not show up. The specific problem lies in a sentence that contains the username: "session opened for user root by {username}(uid=0)". Sometimes the username will not show up and the sentence will look like this: "session opened for user root by (uid=0)". Therefore the user cannot be identified. This problem only occures at times when `sudo su` is used in combination with a gui terminal. If one of the two is not used, this problem does not occure. In this instance, a gui terminal does not include times when remotely connecting to a server via ssh, or when using a headless/non-gui system: tty1.

@@ -53,7 +53,7 @@ def identify_users():
             if t == len(root_users):
                 if x >= 1:
                     print("    " + u + "     became root " + str(x) + " times.")
-    
+
     if not login:
         print("    No one became root")
     
