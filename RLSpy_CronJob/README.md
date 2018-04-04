@@ -1,3 +1,5 @@
+-Version 1.0-
+
 The two scripts work together in order to find out if a user has logged/used su to become root. This program is disigned to be executed as a cronjob. It is recommended to have this program executed every Saturday at 11:59 PM. When cronjob executes the program, all data/information collected will be reported to the root_login_log. (NOTE: More notes will be added soon... This program will be updated soon as well. Needs a few more things added...)
 
 Important Notes:
