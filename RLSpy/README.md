@@ -7,4 +7,4 @@ Security Features/Notes:
 - The auth.log will be scanned up to 7 days worth of logs, unless user manually changes the number of days within the main script.
 
 Program Notes/Faults:
-- If a user, user1, became a different user on the system via `sudo su {username}`, and logged into the root account, he or she will not be flagged as the user who logged in as root. Instead, the user he or she changed to will take the blame.
+- If a user, user1, became a different user on the system via `sudo su {username}`, and logged into the root account, he or she will not be flagged as the user who logged in as root. Instead, the user he or she changed to will take the blame. To counter act this, it is recommended to use `last` or `lastlog` with the date of your choosing, to identify all users who logged onto the system. Use the information you gain from last/lastlog with the information from this program to pinpoint the exact user.
