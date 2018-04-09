@@ -1,4 +1,4 @@
--Version 2.0-
+-Version 2.1-
 
 This program scans auth.log in order to find out if a user(s) have logged in as root, and identify who they are.
 
