@@ -40,7 +40,7 @@ def root_users():
         users = days[start_date]
         if users:
             for user,count in users.items(): # user,count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
-                print("   ", user, "became root", str(count), (" time" if count == 1 else " times"))
+                print("   ", user, "became root", str(count), ("time" if count == 1 else "times"))
         else:
             print("    No one became root")
         start_date += timedelta(days=1)
