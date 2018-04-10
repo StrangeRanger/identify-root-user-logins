@@ -3,7 +3,7 @@
 This program scans auth.log in order to find out if a user(s) have logged in as root, and identify who they are. This program is disigned to be executed as a cronjob. It is recommended to have this program executed every Saturday at 11:59 PM. When cronjob executes the program, all data/information collected will be reported to the root_login_log. 
 
 Important Notes:
-- When creating the cronjob, create it in root's cronjob by entering `sudo corntab -e`. The recommended crontab preset/setting is `59 23 * * 6 cd {location of RLSpy_CronJob} && python3 root_login_search.py`. It is important that you include `cd {location of RLSpy_CronJob}` or else the cronjob will not work.
+- When creating the cronjob, create it in root's cronjob by entering `sudo corntab -e`. The recommended crontab preset/setting is `59 23 * * * cd {location of RLSpy_CronJob} && python3 root_login_search.py`. It is important that you include `cd {location of RLSpy_CronJob}` or else the cronjob will not work.
 
 Security Features/Notes:
 - If a user on the system created a temporary account in order to log in as root, then deletes the account after he or she is done with it, the temporary account will still show up in the scan results.
