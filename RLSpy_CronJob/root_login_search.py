@@ -3,10 +3,10 @@ import sys
 import collections
 from datetime import datetime, timedelta
 
-N = 7 # how many days
+N = 0 # how many days
 log = open("root_login_log", "a")
 
-# the commented out section below is something that will be introduced later in the future
+# the commented out section below is something that will be introduced in a later version
 #if exists("root_login_log"):
 #    log.write("---auth.log scanned on " + str(datetime.now()) + "---\n") 
 #else:
@@ -19,14 +19,14 @@ def root_users():
     start_date = today - timedelta(days=N)
     this_year = datetime.now().year
     last_year = this_year - 1
-    days = collections.defaultdict(collections.Counter) ## ?1
+    days = collections.defaultdict(collections.Counter) # A.1. a defaultdict that maps objects (dates) to counters. 
 
     with open("/var/log/auth.log", "r") as txt: 
         for line in txt:
-            matched = None ## ?
             fields = line.split() 
             date_str = " ".join(fields[0:2]) + " " 
-            try: ## ? -->2
+            # makes sure that the log date is correct; current date is January 01 2020 and looking a line in log with date Dec 29 that was logged in 2019. Makes sure date added to days is not Dec 29 2020.
+            try:
                 date = datetime.strptime(date_str + str(this_year), "%b %d %Y").date()
                 if date > today: raise ValueError
             except ValueError:
@@ -34,18 +34,23 @@ def root_users():
 
             if (date < start_date):
                 # too old for interest
-                continue ## ? <--2
-            # "user : TTY=tty/1 ; PWD=/home/user ; USER=root ; COMMAND=/bin/su
+                continue 
+            # "user : TTY=tty/1 ; PWD=/home/user ; USER=root ; COMMAND=/bin/su"
             if fields[4] == "sudo:":
                 user = fields[5]
-                if user != "root" and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"): ## why say fields [-1] in ("...? ## why bin/sh?
-                    days[date][user] += 1 ## ?1
+                if user != "root" and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"): 
+                    days[date][user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+            # "Successful su for root by user"; identifies users who use su without sudo
+            if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root":
+                user = fields[-1]
+                if user != "root":
+                    days[date][user] += 1 # A.2.
 
     while start_date <= today:
         log.write(start_date.strftime("On %b %d:\n"))
         users = days[start_date]
         if users:
-            for user,count in users.items(): # why user,count?
+            for user,count in users.items(): # user,count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
                 log.write("    " + str(user) + " became root " + str(count) + (" time\n" if count == 1 else " times\n"))
         else:
             log.write("    No one became root\n")
