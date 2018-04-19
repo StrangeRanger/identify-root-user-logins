@@ -1,17 +1,13 @@
 import sys
-#from os.path import exists
+import os.path
 import collections
 from datetime import datetime, timedelta
 
 N = 0 # how many days
-log = open("root_login_log", "a")
+path = os.path.split(sys.argv[0])[0] + "/root_login_log"
+log = open(path, "a")
 
-# the commented out section below is something that will be introduced in a later version
-#if exists("root_login_log"):
-#    log.write("---auth.log scanned on " + str(datetime.now()) + "---\n") 
-#else:
-#    sys.exit("ERROR: Please make sure you have correctly created the cronjob: `59 23 * * 6 cd {location of RLSpy_CronJob} && python3 root_login_search.py`. It is important that you include `cd {location of RLSpy_CronJob}`. Everything before that can be customized.")
-
+os.chmod(path, 0000)
 log.write("---auth.log scanned on " + str(datetime.now()) + "---\n")
 
 def root_users():
