@@ -4,10 +4,10 @@ import collections
 from datetime import datetime, timedelta
 
 N = 0 # how many days
-path = os.path.split(sys.argv[0])[0] + "/root_login_log"
+path = os.path.split(sys.argv[0])[0] + "/root_login_log" # ensures the correct location of root_login_log
 log = open(path, "a")
 
-os.chmod(path, 0000)
+os.chmod(path, 0000) 
 log.write("---auth.log scanned on " + str(datetime.now()) + "---\n")
 
 def root_users():
