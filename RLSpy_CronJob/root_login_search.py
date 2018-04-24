@@ -3,6 +3,7 @@ import os.path
 import collections
 from datetime import datetime, timedelta
 
+# impliment something to prevent blame. use what shows up when you "sudo su username" in auth.log
 N = 0 # how many days
 path = os.path.split(sys.argv[0])[0] + ("root_login_log" if os.path.isfile("root_login_search.py") else "/root_login_log") # ensures the correct location of root_login_log
 log = open(path, "a")
