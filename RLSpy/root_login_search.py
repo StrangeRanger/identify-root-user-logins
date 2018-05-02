@@ -13,8 +13,8 @@ def root_users():
     with open("/var/log/auth.log", "r") as txt: 
         for line in txt:
             fields = line.split() 
-            date_str = " ".join(fields[0:2]) + " " #???
-            # makes sure that the log date is correct; current date is January 01 2020 and looking a line in log with date Dec 29 that was logged in 2019. Makes sure date added to days is not Dec 29 2020. 
+            date_str = " ".join(fields[0:2]) + " " 
+            # makes sure that the log date is correct; current date is January 01 2020 and looking at a line in log with date Dec 29 that was logged in 2019. Makes sure date added to days is not Dec 29 2020. 
             try:
                 date = datetime.strptime(date_str + str(this_year), "%b %d %Y").date()
                 if date > today: raise ValueError
