@@ -14,7 +14,7 @@ def root_users():
         for line in txt:
             fields = line.split() 
             date_str = " ".join(fields[0:2]) + " " 
-            # makes sure that the log date is correct; current date is January 01 2020 and looking at a line in log with date Dec 29 that was logged in 2019. Makes sure date added to days is not Dec 29 2020. 
+            # makes sure that the log date is correct; current date is January 01 2020 and looking a line in log with date Dec 29 that was logged in 2019. Makes sure date added to days is not Dec 29 2020. 
             try:
                 date = datetime.strptime(date_str + str(this_year), "%b %d %Y").date()
                 if date > today: raise ValueError
@@ -28,19 +28,26 @@ def root_users():
             if fields[4] == "sudo:":
                 user = fields[5]
                 if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
-                    days[date][user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                    days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                # checks for anyone who used "su" to change to a different user, other than root
+                elif user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                    days[date]["-" + user] += 1
+
             # "Successful su for root by user"; identifies users who use su without sudo
             if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root":
                 user = fields[-1]
                 if user != "root":
-                    days[date][user] += 1 # A.2.
+                    days[date]["+" + user] += 1 # A.2.
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
         users = days[start_date]
         if users:
-            for user,count in users.items(): # user,count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
-                print("   ", user, "became root", str(count), ("time" if count == 1 else "times"))
+            for user, count in users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
+                if "-" in user:
+                    print("   ", user, "switched users", str(count), ("time" if count == 1 else "times"))
+                else:
+                    print("   ", user, "became root", str(count), ("time" if count == 1 else "times"))
         else:
             print("    No one became root")
         start_date += timedelta(days=1)
