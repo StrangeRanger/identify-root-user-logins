@@ -28,10 +28,12 @@ def root_users():
             if fields[4] == "sudo:":
                 user = fields[5]
                 # checks for anyone who used "su" to change to a different user, other than root
-                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") and fields[-1] != "root":
-                    days[date]["-" + user] += 1
-                elif user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and (fields[-3] == "USER=root" or fields[-4] == "USER=root") and (fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") or (fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") and fields[-1] == "root")):
-                    days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") and "root" not in fields[-1]: ### small error found: if user inputs their sudo password correctly when exectuing 'sudo su <user>", but the user does not exist, they will still be marked
+                    days[date]["-" + user] += 1  # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                elif user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") and fields[-1] == "root":
+                    days[date]["+" + user] += 1  # A.2.
+                elif user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and (fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")):
+                    days[date]["+" + user] += 1 # A.2.
 
             # "Successful su for root by user"; identifies users who use su without sudo
             if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root":
