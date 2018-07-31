@@ -28,20 +28,23 @@ def root_users():
             if fields[4] == "sudo:":
                 user = fields[5]
                 conditions = (user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")) 
-                # (put what is seen when this is in auth.log); identifies users who successfully became root using `sudo su`
+                # "..."; identifies users who successfully became root using `sudo su`
                 if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
                     days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
-                # identifies users who successfully became root using `sudo su root`
+                # "..."; identifies users who successfully became root using `sudo su root`
                 elif conditions and fields[-1] == "root":
                     days[date]["+" + user] += 1 # A.2.
-                # identifies users who unsuccessfully became root using `sudo su`
+                # "..."; identifies users who unsuccessfully became root using `sudo su`
                 elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
                     days[date]["*" + user] += 1
-                # identifies users who successfully switched users using `sudo su <username>`
+                # "..."; identifies users who successfully switched users using `sudo su <username>`
                 elif conditions and fields[-1] != "root": 
                     days[date]["-" + user] += 1 # A.2.
                 ### code will be placed here that identifies users who unsuccessfully switch users using `sudo su <username>`
+                elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                    days[date]["/" + user] += 1 # A.2.
 
+            ## when a way is found, make it so that the severity level is greater with the ones below. "Change your password...<> knows your password"
             # "Successful su for root by user"; identifies users who've successfully became root using `su`
             if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root":
                 user = fields[-1]                
@@ -62,6 +65,8 @@ def root_users():
                 user= fields[-1]
                 if user != "root":
                     days[date]["/" + user] += 1 # A.2.
+
+    print(days)
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
