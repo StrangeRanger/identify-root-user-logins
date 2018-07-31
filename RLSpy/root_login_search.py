@@ -66,8 +66,6 @@ def root_users():
                 if user != "root":
                     days[date]["/" + user] += 1 # A.2.
 
-    print(days)
-
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
         users = days[start_date]
