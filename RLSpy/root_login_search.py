@@ -27,29 +27,55 @@ def root_users():
             # "user : TTY=tty/1 ; PWD=/home/user ; USER=root ; COMMAND=/bin/su"
             if fields[4] == "sudo:":
                 user = fields[5]
-                # checks for anyone who used "su" to change to a different user, other than root
-                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") and fields[-1] != "root": 
-                    days[date]["-" + user] += 1  # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
-                elif user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su") and fields[-1] == "root":
-                    days[date]["+" + user] += 1  # A.2.
-                elif user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                conditions = (user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")) 
+                # (put what is seen when this is in auth.log); identifies users who successfully became root using `sudo su`
+                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                    days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                # identifies users who successfully became root using `sudo su root`
+                elif conditions and fields[-1] == "root":
                     days[date]["+" + user] += 1 # A.2.
+                # identifies users who unsuccessfully became root using `sudo su`
+                elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                    days[date]["*" + user] += 1
+                # identifies users who successfully switched users using `sudo su <username>`
+                elif conditions and fields[-1] != "root": 
+                    days[date]["-" + user] += 1 # A.2.
+                ### code will be placed here that identifies users who unsuccessfully switch users using `sudo su <username>`
 
-            # "Successful su for root by user"; identifies users who use su without sudo
+            # "Successful su for root by user"; identifies users who've successfully became root using `su`
             if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root":
-                user = fields[-1]
+                user = fields[-1]                
                 if user != "root":
                     days[date]["+" + user] += 1 # A.2.
+            # "FAILED su for root by <username>"; identifies users who've unsuccessfully became root using `su`
+            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] == "root":
+                user = fields[-1]
+                if user != "root":
+                    days[date]["*" + user] += 1 # A.2.
+            # "Successful su for <username> by <username>"; identifies users who've successfully switched users using `su <username>`
+            elif fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] != "root":
+                user= fields[-1]
+                if user != "root":
+                    days[date]["-" + user] += 1 # A.2. 
+            # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
+            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] != "root":
+                user= fields[-1]
+                if user != "root":
+                    days[date]["/" + user] += 1 # A.2.
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
         users = days[start_date]
         if users:
             for user, count in users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
-                if "-" in user:
-                    print("   ", user, "switched users", str(count), ("time" if count == 1 else "times"))
-                else:
+                if "+" in user:
                     print("   ", user, "became root", str(count), ("time" if count == 1 else "times"))
+                elif "-" in user:
+                    print("   ", user, "switched users", str(count), ("time" if count == 1 else "times"))
+                elif "*" in user:
+                    print("   ", user, "tried to become root", str(count), ("time" if count == 1 else "times"))
+                elif "/" in user:
+                    print("   ", user, "tried to switch users", str(count), ("time" if count == 1 else "times"))
         else:
             print("    No one became root")
         start_date += timedelta(days=1)
