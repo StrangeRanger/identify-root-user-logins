@@ -13,3 +13,13 @@ Program Notes/Faults:
 Other Notes:
 - By default, the auth.log will be scanned up to 7 days worth of logs. If you wish to change the number of days, change teh value of N in the script.
 
+This program only works on Linux based systems.
+Current Distros That The Program Works On:
+- Ubuntu: Works
+- Debian: Unkown
+- CentOS: Unkown
+- Mint: Unkown
+- Arch: Unkown
+- Fedora: unkown
+- ...
+
