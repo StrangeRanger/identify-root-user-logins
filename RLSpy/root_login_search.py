@@ -1,6 +1,9 @@
 import collections
 from datetime import datetime, timedelta
 
+class DateError(Exception):
+    pass
+
 N = 7 # how many days
 
 def root_users():
@@ -14,12 +17,16 @@ def root_users():
         for line in txt:
             fields = line.split() 
             date_str = " ".join(fields[0:2]) + " " 
-            # makes sure that the log date is correct; current date is January 01 2020 and looking a line in log with date Dec 29 that was logged in 2019. Makes sure date added to days is not Dec 29 2020. 
+            # makes sure that the log date is correct; if current date is January 01 2020 and looking a line in log with date Dec 31 that was logged in 2019, the date would = Dec 31 2020. Lines below prevent this.
             try:
                 date = datetime.strptime(date_str + str(this_year), "%b %d %Y").date()
-                if date > today: raise ValueError
-            except ValueError:
+                if date > today: raise DateError
+            except DateError:
                 date = datetime.strptime(date_str + str(last_year), "%b %d %Y").date()
+              # will skip any abnormal/non-regular text in /var/log/auth.log that could produce an Error, and then prints out a message telling the user to check out the line in the file.
+            except ValueError:
+                print("There was an abnormality on a line. Please take a look inside /var/log/auth.log at the line matching this: {}".format(line))
+                continue
 
             if (date < start_date):
                 # too old for interest
