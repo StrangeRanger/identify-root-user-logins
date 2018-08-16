@@ -101,26 +101,3 @@ def root_users():
 
 root_users()
 log.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
