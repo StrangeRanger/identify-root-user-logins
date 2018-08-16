@@ -8,7 +8,7 @@ Security Features/Notes:
 
 Program Notes/Faults:
 - If a user, user1, became a different user on the system via `sudo su {username}`, and logged into the root account, he or she will not be flagged as the user who logged in as root. Instead, the user he or she changed to will take the blame. To make it easier to identify the user who really logged into the root account, the program will print out any and all users who use `sudo su` to change to another user's account.
-- Small error: if user inputs their sudo password correctly when executing `sudo su <username>`, but the username does not exist, they will still be marked.
+- Small error: if user inputs their sudo password correctly when executing `sudo su <username>`, but the username does not exist, they will still be marked as `<username> has switched users <X> time(s)`.
 
 Other Notes:
 - By default, the auth.log will be scanned up to 7 days worth of logs. If you wish to change the number of days, change teh value of N in the script.
@@ -16,6 +16,7 @@ Other Notes:
 This program only works on Linux based systems.
 Current Distros That The Program Works On:
 - Ubuntu: Works
+- Kali: Works
 - Debian: Unkown
 - CentOS: Unkown
 - Mint: Unkown
