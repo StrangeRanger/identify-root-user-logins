@@ -34,44 +34,49 @@ def root_users():
             # "user : TTY=tty/1 ; PWD=/home/user ; USER=root ; COMMAND=/bin/su"
             if fields[4] == "sudo:":
                 user = fields[5]
-                conditions = (user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")) 
+                # successful
+                conditions = (user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"))
+                # unsuccessful
+                conditions2 = (user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"))
+                # `sudo su`...
+                conditions3 =  fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")
+
                 # "..."; identifies users who successfully became root using `sudo su`
-                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and conditions3:
                     days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                # "..."; identifies users who unsuccessfully became root using `sudo su`
+                elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and conditions3:
+                    days[date]["*" + user] += 1 # A.2.
                 # "..."; identifies users who successfully became root using `sudo su root`
                 elif conditions and fields[-1] == "root":
                     days[date]["+" + user] += 1 # A.2.
-                # "..."; identifies users who unsuccessfully became root using `sudo su`
-                elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
-                    days[date]["*" + user] += 1
+                # "..."; identifies users who unsuccessfully became root using `sudo su root`
+                elif conditions2 and fields[-1] == "root":
+                    days[date]["*" + user] += 1 # A.2.
                 # "..."; identifies users who successfully switched users using `sudo su <username>`
                 elif conditions and fields[-1] != "root": 
                     days[date]["-" + user] += 1 # A.2.
-                ### code will be placed here that identifies users who unsuccessfully switch users using `sudo su <username>`
-                elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su"):
+                # "..."; identifies users who unsuccessfully switched users using `sudo su <username>`
+                elif conditions2 and fields[-1] != "root":
                     days[date]["/" + user] += 1 # A.2.
 
             ## when a way is found, make it so that the severity level is greater with the ones below. "Change your password...<> knows your password"
-            # "Successful su for root by user"; identifies users who've successfully became root using `su`
-            if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root":
-                user = fields[-1]                
-                if user != "root":
-                    days[date]["+" + user] += 1 # A.2.
-            # "FAILED su for root by <username>"; identifies users who've unsuccessfully became root using `su`
-            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] == "root":
+            # "Successful su for root by user"; identifies users who've successfully became root using `su` and/or `su root`
+            if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root" and fields[-1] != "root":
                 user = fields[-1]
-                if user != "root":
-                    days[date]["*" + user] += 1 # A.2.
+                days[date]["+" + user] += 1 # A.2.
+            # "FAILED su for root by <username>"; identifies users who've unsuccessfully became root using `su` and/or `su root`
+            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] == "root" and fields[-1] != "root":
+                user = fields[-1]
+                days[date]["*" + user] += 1 # A.2.
             # "Successful su for <username> by <username>"; identifies users who've successfully switched users using `su <username>`
-            elif fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] != "root":
-                user= fields[-1]
-                if user != "root":
-                    days[date]["-" + user] += 1 # A.2. 
+            elif fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] != "root" and fields[-1] != "root":
+                user = fields[-1]
+                days[date]["-" + user] += 1 # A.2. 
             # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
-            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] != "root":
-                user= fields[-1]
-                if user != "root":
-                    days[date]["/" + user] += 1 # A.2.
+            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] != "root" and fields[-1] != "root":
+                user = fields[-1]
+                days[date]["/" + user] += 1 # A.2.
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
