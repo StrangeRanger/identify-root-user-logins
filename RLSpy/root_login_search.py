@@ -60,23 +60,29 @@ def root_users():
                 elif conditions2 and fields[-1] != "root":
                     days[date]["/" + user] += 1 # A.2.
 
-            ## when a way is found, make it so that the severity level is greater with the ones below. "Change your password...<> knows your password"
-            # "Successful su for root by user"; identifies users who've successfully became root using `su` and/or `su root`
-            if fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] == "root" and fields[-1] != "root":
-                user = fields[-1]
-                days[date]["+" + user] += 1 # A.2.
-            # "FAILED su for root by <username>"; identifies users who've unsuccessfully became root using `su` and/or `su root`
-            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] == "root" and fields[-1] != "root":
-                user = fields[-1]
-                days[date]["*" + user] += 1 # A.2.
-            # "Successful su for <username> by <username>"; identifies users who've successfully switched users using `su <username>`
-            elif fields[4].startswith("su[") and fields[5] == "Successful" and fields[-3] != "root" and fields[-1] != "root":
-                user = fields[-1]
-                days[date]["-" + user] += 1 # A.2. 
-            # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
-            elif fields[4].startswith("su[") and fields[5] == "FAILED" and fields[-3] != "root" and fields[-1] != "root":
-                user = fields[-1]
-                days[date]["/" + user] += 1 # A.2.
+            if fields[4].startswith("su["):
+                # root by <username>
+                conditions4 = fields[-3] == "root" and fields[-1] != "root"
+                # <username> by <username>
+                conditions5 = fields[-3] != "root" and fields[-1] != "root"
+
+                ## when a way is found, make it so that the severity level is greater with the ones below. "Change your password...<> knows your password"
+                # "Successful su for root by <username>"; identifies users who've successfully became root using `su` and/or `su root`
+                if fields[5] == "Successful" and conditions4:
+                    user = fields[-1]
+                    days[date]["+" + user] += 1 # A.2.
+                # "FAILED su for root by <username>"; identifies users who've unsuccessfully became root using `su` and/or `su root`
+                elif fields[5] == "FAILED" and conditions4:
+                    user = fields[-1]
+                    days[date]["*" + user] += 1 # A.2.
+                # "Successful su for <username> by <username>"; identifies users who've successfully switched users using `su <username>`
+                elif fields[5] == "Successful" and conditions5:
+                    user = fields[-1]
+                    days[date]["-" + user] += 1 # A.2. 
+                # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
+                elif fields[5] == "FAILED" and conditions5:
+                    user = fields[-1]
+                    days[date]["/" + user] += 1 # A.2.
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
