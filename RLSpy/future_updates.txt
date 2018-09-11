@@ -1,1 +1,2 @@
-- if a user tries to use sudo that is not in the sudoers file, will be idenfied in a different manner than the other reports... (user tried to use root even though they are not in the sudoers file)
+- do more testing with script to make sure the identification of users...: "user NOT in sudoers file"... is working properly
+- add stuff from macOS version in root_login_check.odt to linux ...odt
