@@ -1,2 +1,1 @@
 - do more testing with script to make sure the identification of users...: "user NOT in sudoers file"... is working properly
-- add stuff from macOS version in root_login_check.odt to linux ...odt
