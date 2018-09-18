@@ -15,7 +15,6 @@ in combination with this script and searching through logs, you will be able to 
 Other Notes:
 - By default, the auth.log will be scanned up to 7 days worth of logs. If you wish to change the number of days, change the value of N in the script.
 
-This script only works on Linux based systems.
 A few Linux distros and whether or not the script works on them:
 - Ubuntu
   - Trusty Tahr: Unkown
