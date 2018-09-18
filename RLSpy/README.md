@@ -1,4 +1,4 @@
-This program scans auth.log in order to find out if a user(s) have logged in as root, and identify who they are.
+This script scans auth.log in order to find out if a user(s) have logged in as root, and identify who they are.
 
 Security Features/Notes:
 - This program identifies user who have used `sudo bash`, `sudo -i`, `sudo su`, and `su`/`su root`
