@@ -1,1 +1,2 @@
+- fix bug that makes it if the string is under around 18 words, an index error will be spat out. (line 45)
 - do more testing with script to make sure the identification of users...: "user NOT in sudoers file"... is working properly
