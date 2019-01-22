@@ -1,3 +1,6 @@
-# monitor (Linux)
-This repository contains scripts that are used for situations that can be catagorized as "monitoring". (NOTE: Each folder contains an individual script/program that works independent from the scripts/programs in the other folders)
+# What does it do
+The script looks for individuals who have logged into the root account....
 
+# Other
+This repository contains two different version of the program. The main one is meant to be executed manually. The other is designed to be used by the CronJob to automatically check for users...
+You can see specifics about the two in their independent folders
