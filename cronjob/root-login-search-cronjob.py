@@ -7,7 +7,7 @@ class DateError(Exception):
     pass
 
 N = 0 # how many days
-path = os.path.split(sys.argv[0])[0] + ("root_login_log" if os.path.isfile("root_login_search.py") else "/root_login_log") # ensures the correct location of root_login_log
+path = os.path.split(sys.argv[0])[0] + ("root-login-log" if os.path.isfile("root-login-search-cronjob.py") else "/root-login-log") # ensures the correct location of root-login-log
 log = open(path, "a")
 
 os.chmod(path, 0000) 
