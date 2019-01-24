@@ -42,7 +42,7 @@ def root_users():
                 conditions3 =  fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")
 
                 # "..."; identifies users who are not in the sudoers file and tried to execute a command with root privilege
-                if user != "root" and fields[8] == "NOT" and fields[10] == "sudoers" and fields[16] == "USER=root" and fields[18].startswith("COMMAND="): ### bug where index is out of range when log line is not long enough (at leat 19 worlds long. The exact reason why the lines below have '(fields[8] != "incorrect" if len(fields) >= 9 else None)
+                if user != "root" and (fields[8] == "NOT" and fields[10] == "sudoers" and fields[16] == "USER=root" and fields[18].startswith("COMMAND=") if len(fields) >= 9 else None): 
                     days[date]["~" + user] += 1
                 # "..."; identifies users who successfully became root using `sudo su`
                 if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and conditions3:
