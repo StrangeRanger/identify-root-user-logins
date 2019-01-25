@@ -34,4 +34,4 @@ Here are a few links to help you get started in setting up with SMTP
 - Gist: [SSMTP setup on Debian](https://gist.github.com/StrangeRanger/d8e83e4683ac98510171f716453ba4db)
 
 ### Quick Note
-Any where that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
+Anywhere that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
