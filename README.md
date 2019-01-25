@@ -34,4 +34,4 @@ The script was created for the purpose of identifing users, on a linux based sys
 - "More will be tested in the future"
 
 ### Quick Note
-Any where that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
+Anywhere that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
