@@ -12,6 +12,7 @@ log = open(path, "a")
 
 os.chmod(path, 0000) 
 log.write("---auth.log scanned on " + str(datetime.now()) + "---\n")
+#print("---auth.log scanned on " + str(datetime.now()) + "---\n") # B.1. part of message that will be sent by email if smtp is enabled
 
 def root_users():
     today = datetime.now().date()
@@ -32,7 +33,8 @@ def root_users():
                 date = datetime.strptime(date_str + str(last_year), "%b %d %Y").date()
               # will skip any abnormal/non-regular text in /var/log/auth.log that could produce an Error, and then prints out a message telling the user to check out the line in the file.
             except ValueError:
-                print("There was an abnormality on a line. Please take a look inside /var/log/auth.log at the line matching this: {}".format(line))
+                log.write("***There was an abnormality on a line. Please take a look inside /var/log/auth.log at the line matching this: {}***".format(line))
+                #print("***There was an abnormality on a line. Please take a look inside /var/log/auth.log at the line matching this: {}***".format(line)) # B.1.
                 continue
 
             if (date < start_date):
@@ -96,6 +98,7 @@ def root_users():
 
     while start_date <= today:
         log.write(start_date.strftime("On %b %d:\n"))
+        #print(start_date.strftime("On %b %d:")) # B.1.
         users = days[start_date]
         if users:
             for user, count in users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
@@ -103,16 +106,22 @@ def root_users():
                 
                 if "~" in user:
                     log.write("    " + user + " is not in the sudoers file and tried to execute a command with root privilege " + end_of_sentence)
+                    #print("   ", user, "is not in the sudoers file and tried to execute a command with root privilege", end_of_sentence) # B.1.
                 elif "+" in user:
                     log.write("    " + user + " became root " + end_of_sentence)
+                    #print("   ", user, "became root", end_of_sentence) # B.1.
                 elif "-" in user:
                     log.write("    " + user + " switched users " + end_of_sentence)
+                    #print("   ", user, "switched users", end_of_sentence) # B.1.
                 elif "*" in user:
                     log.write("    " + user + " tried to become root " + end_of_sentence)
+                    #print("   ", user, "tried to become root", end_of_sentence) # B.1.
                 elif "/" in user:
                     log.write("    " + user + " tried to switch users " + end_of_sentence)
+                    #print("   ", user, "tried to switch users", end_of_sentence) # B.1.
         else:
             log.write("    No one became root\n")
+            #print("    No one became root") # B.1.
         start_date += timedelta(days=1)
 
     log.write("*****************************************************+-*/\n" if users else "*****************************************************\n")
