@@ -12,13 +12,14 @@ The script was created for the purpose of identifing users, on a linux based sys
 - Any and all users who attempt to either log into the root account or switch users, and are unsuccessful, will be identified and marked down.
 - Users who are not in the sudoers file and try to execute a command with root privilege, will be identified.
 
-## Script Notes/Faults:
+## Script Faults/Limitations
 - If a user with sudo power, call him Mal, switches to another user who may or may not have sudo power, call him Vic, then uses `sudo` or `su`, will cause Vic to be blamed for executing the commands instead of Mal. Though, Mal must know Vic's password in order successfully use sudo. The best way to verify who actually did it is 
   - Semi-built in helper: Becuase the script will identify users who use `su` and `sudo su`, Mal will be identified as an individual who switched users.
   - Method of weeding out true culprit: Look through the auth.log at the logs taken on the given day that the incident took place... To know what to look for, please refer to "dentifying-patterns.odt"; it contains all auth.log logs that are created in relation to the given commands and there relative success or failure...
 
-## Flaws (that will be fixed in the future):
+## Flaws (that will be fixed, hopefully, in the future)
 - If a user inputs their sudo password correctly when executing `sudo su {username}`, but the username does not exist, they will still be marked as `{username} has switched users {X} time(s)`.
+- The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into.
 
 ## Requirements
 - Python 3.x
