@@ -1,13 +1,14 @@
-# The Way This Script Is Used
-This script is disigned to be executed as a cronjob. It is recommended to have this script executed everyday at 11:59 PM. When cronjob executes the script, all data/information collected will be reported to/placed in the root-login-log located in the same directory as the script. 
+# General Info
+## The Way This Script Is Used
+This script is disigned to be executed as a cronjob. When cronjob executes the script, all data/information collected will be reported to/placed in the root-login-log located in the same directory as the script. 
 
-## Important Notes:
-- When creating the cronjob, create it in root's cronjob by executing `sudo corntab -e`. The recommended cronjob preset/setting is `58 23 * * * python3 /location/of/root-login-search-cronjob.py`.
+## Setting Up Cronjob:
+When creating the cronjob, create it in root's cronjob by executing `sudo corntab -e`. The cronjob will want to look something like this `58 23 * * * python3 /location/of/root-login-search-cronjob.py`. Currently, it is recommended to create two cronjobs: `58 23 * * * python3 /location/of/root-login-search-cronjob.py` & `58 11 * * * python3 /location/of/root-login-search-cronjob.py`. It is not neccessary to use both but it is recommended, because of a current flaw in the script. Check the main README.md to read the different flaws that have been found in the script
 
-## Other Notes:
-- By default, the auth.log will only be scanned for logs written on the current day. If you wish to change the number of days, change the value of N in the script.
+## Maintaning root-login-search.log
+Currently, the only to maintain the logs is by manually going in and deleting all the logs if you feel that there are too many. Later in the future, an update may be added that will create a [logrotate](https://linux.die.net/man/8/logrotate) specifically for maintaining the log file.
 
-# Sending Scan Report Via SMTP
+# Using SMTP To Send Scan Report Via Email (Optional)
 If you want to use SMTP and Mail to send yourself the results of the scan by email you will want to do a few things to the script.
 - Inside the script, uncomment all commented out `print` lines that have "B.1." at the end of them. This will print all the same info that is written to the log.
 - Instead of entering the cronjob setting listed in the "Important Notes", use this: `58 23 * * * python3 /location/of/root-login-search-cronjob.py | mail -s "root-login-search-cronjob results" {email of recipient}`.
@@ -33,5 +34,9 @@ Here are a few links to help you get started in setting up with SMTP
 - Arch Wiki: [SSMTP](https://wiki.archlinux.org/index.php/SSMTP)
 - Gist: [SSMTP setup on Debian](https://gist.github.com/StrangeRanger/d8e83e4683ac98510171f716453ba4db)
 
-### Quick Note
+# Other Notes
+## Script Notes
+By default, the auth.log will only be scanned for logs written on the current day and the day before. If the time that the cronjob is executed is based off of when they. If you wish to change the number of days, change the value of N in the script.
+
+## Non-Script Notes
 Anywhere, inside of this README.md, that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
