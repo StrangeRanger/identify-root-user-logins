@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 class DateError(Exception):
     pass
 
-N = 0 # how many days
-path = os.path.split(sys.argv[0])[0] + ("root-login-log" if os.path.isfile("root-login-search-cronjob.py") else "/root-login-log") # ensures the correct location of root-login-log
+N = 0 # number of days that will be checked that came before today: N = 1 means that yesterday's logs will be checked as well
+path = os.path.split(sys.argv[0])[0] + ("root-login-search.log" if os.path.isfile("root-login-search-cronjob.py") else "/root-login-search.log") # ensures the correct location of root-login-log
 log = open(path, "a")
 
 os.chmod(path, 0000) 
