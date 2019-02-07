@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 class DateError(Exception):
     pass
 
-N = 7 # how many days
+N = 7 # number of days that will be checked that came before today: N = 1 means that today's and yesterday's logs will be checked
 
 def root_users():
     today = datetime.now().date()
@@ -107,5 +107,7 @@ def root_users():
         else:
             print("    No one became root")
         start_date += timedelta(days=1)
+
+    print(days)
 
 root_users()
