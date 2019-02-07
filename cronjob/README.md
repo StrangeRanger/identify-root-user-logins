@@ -1,11 +1,11 @@
 # General Info
 ## The Way This Script Is Used
-This script is disigned to be executed as a cronjob. When cronjob executes the script, all data/information collected will be reported to/placed in the root-login-log located in the same directory as the script. 
+This script is designed to be executed as a cronjob. When cronjob executes the script, all data/information collected will be reported to/placed in the root-login-log located in the same directory as the script. 
 
 ## Setting Up Cronjob:
-When creating the cronjob, create it in root's cronjob by executing `sudo corntab -e`. The cronjob will want to look something like this `58 23 * * * python3 /location/of/root-login-search-cronjob.py`. Currently, it is recommended to create two cronjobs: `58 23 * * * python3 /location/of/root-login-search-cronjob.py` & `58 11 * * * python3 /location/of/root-login-search-cronjob.py`. It is not neccessary to use both but it is recommended, because of a current flaw in the script. Check the main README.md to read the different flaws that have been found in the script
+When creating the cronjob, create it in root's cronjob by executing `sudo corntab -e`. The cronjob will want to look something like this `58 23 * * * python3 /location/of/root-login-search-cronjob.py`. Currently, it is recommended to create two cronjobs: `58 23 * * * python3 /location/of/root-login-search-cronjob.py` and on a separate line `58 11 * * * python3 /location/of/root-login-search-cronjob.py`. It is not necessary to use both but it is recommended, because of a current flaw in the script. Check the main README.md to read the different flaws that have been found in the script
 
-## Maintaning root-login-search.log
+## Maintaining root-login-search.log
 Currently, the only to maintain the logs is by manually going in and deleting all the logs if you feel that there are too many. Later in the future, an update may be added that will create a [logrotate](https://linux.die.net/man/8/logrotate) specifically for maintaining the log file.
 
 # Using SMTP To Send Scan Report Via Email (Optional)

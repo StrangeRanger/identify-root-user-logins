@@ -1,9 +1,9 @@
 # Purpose/What It Does
-The script was created for the purpose of identifing users, on a linux based system, who have have successfully and unsuccessfully logged into/switch to the root user account as well as those who have successfully and unsuccessfully switched to a different user on the system. It does this by looking for a hard coded pattern/string/set of lines that are written to `/var/log/auth.log`. These patterns can be looked at in `identifying-patterns.odt`.
+The script was created for the purpose of identifying users, on a linux based system, who have have successfully and unsuccessfully logged into/switch to the root user account as well as those who have successfully and unsuccessfully switched to a different user on the system. It does this by looking for a hard coded pattern/string/set of lines that are written to `/var/log/auth.log`. These patterns can be looked at in `identifying-patterns.odt`.
 
 ## Specifics
 - There are two versions of the script. One is designed for manual execution. The other is designed to be executed as a CronJob.
-- When executing either versions of the script, you **must** use `sudo` or else an error will be produced tellig you that you do not have permission to read the log. 
+- When executing either versions of the script, you **must** use `sudo` or else an error will be produced telling you that you do not have permission to read the log. 
 
 ## Security Features/Notes:
 - This script identifies user who have used `sudo bash`, `sudo -i`, `sudo su`, and `su`/`su root`
@@ -14,25 +14,29 @@ The script was created for the purpose of identifing users, on a linux based sys
 
 ## Script Faults/Limitations
 - If a user with sudo power, call him Mal, switches to another user who may or may not have sudo power, call him Vic, then uses `sudo` or `su`, will cause Vic to be blamed for executing the commands instead of Mal. Though, Mal must know Vic's password in order successfully use sudo. The best way to verify who actually did it is 
-  - Semi-built in helper: Becuase the script will identify users who use `su` and `sudo su`, Mal will be identified as an individual who switched users.
-  - Method of weeding out true culprit: Look through the auth.log at the logs taken on the given day that the incident took place... To know what to look for, please refer to "dentifying-patterns.odt"; it contains all auth.log logs that are created in relation to the given commands and there relative success or failure...
+  - Semi-built in helper: Because the script will identify users who use `su` and `sudo su`, Mal will be identified as an individual who switched users.
+  - Method of weeding out true culprit: Look through the auth.log at the logs taken on the given day that the incident took place... To know what to look for, please refer to "identifying-patterns.odt"; it contains all auth.log logs that are created in relation to the given commands and there relative success or failure...
 
 ## Flaws (that will be fixed, hopefully, in the future)
 - If a user inputs their sudo password correctly when executing `sudo su {username}`, but the username does not exist, they will still be marked as `{username} has switched users {X} time(s)`.
 - The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into.
+
+# What It Doesn't Do
+- The script will not identify the root user for anything, even if it does/meets the requirements/identifiers that are mentioned above
 
 ## Requirements
 - Python 3.x
 
 ## Linux Distros That The Script Works On:
 - Ubuntu
-  - Trusty Tahr: Unkown
+  - Trusty Tahr: Unknown
   - Xenial Xerus: Works
-  - Bionic Beaver: Unkown
+  - Bionic Beaver: Unknown
 - Debian
-  - Jessie: Unkown
+  - Jessie: Unknown
   - Stretch: Works
 - "More will be tested in the future"
 
-### Quick Note
+# Other Notes
+## Non-Script Notes
 Anywhere, inside of this README.md, that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
