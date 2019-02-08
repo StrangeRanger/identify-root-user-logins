@@ -94,12 +94,12 @@ def root_users():
                 elif fields[5] == "Successful" and conditions5:
                     user = fields[-1]
                     victim = fields[-3]
-                    daysv2[date]["-" + user][victim] += 1 # A.2. 
+                    daysv2[date]["-" + user][victim] += 1 # B.2. 
                 # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
                 elif fields[5] == "FAILED" and conditions5:
                     user = fields[-1]
                     victim = fields[-3]
-                    daysv2[date]["/" + user][victim] += 1 # A.2.
+                    daysv2[date]["/" + user][victim] += 1 # B.2.
 
 
     def rename():
