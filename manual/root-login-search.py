@@ -26,7 +26,7 @@ def root_users():
                 date = datetime.strptime(date_str + str(last_year), "%b %d %Y").date()
               # will skip any abnormal/non-regular text in /var/log/auth.log that could produce an Error, and then prints out a message telling the user to check out the line in the file.
             except ValueError:
-                print("There was an abnormality on a line. Please take a look inside /var/log/auth.log at the line matching this: {}".format(line))
+                print("There was an abnormality in /var/log/auth.log: {}\n".format(line))
                 continue
 
             if (date < start_date):
