@@ -11,7 +11,8 @@ def root_users():
     start_date = today - timedelta(days=N)
     this_year = datetime.now().year
     last_year = this_year - 1
-    days = collections.defaultdict(collections.Counter) # A.1. a defaultdict that maps objects (dates) to counters.
+    days = collections.defaultdict(collections.Counter) # A.1. a defaultdict that maps objects (dates and users) to a counter
+    daysv2 = collections.defaultdict(lambda: collections.defaultdict(collections.Counter)) # B.1. two nested defaultdicts that map objects (dates, users, and victims) to a counter
 
     with open("/var/log/auth.log", "r") as txt: 
         for line in txt:
@@ -39,10 +40,10 @@ def root_users():
                 # unsuccessful
                 conditions2 = user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
                 # `sudo su`...
-                conditions3 =  fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")
+                conditions3 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")
 
                 # "..."; identifies users who are not in the sudoers file and tried to execute a command with root privilege
-                if user != "root" and (fields[8] == "NOT" and fields[10] == "sudoers" and fields[16] == "USER=root" and fields[18].startswith("COMMAND=") if len(fields) >= 9 else None): 
+                if user != "root" and (fields[8] == "NOT" and fields[10] == "sudoers" and fields[16] == "USER=root" and fields[18].startswith("COMMAND=") if len(fields) >= 9 else None):
                     days[date]["~" + user] += 1
                 # "..."; identifies users who successfully became root using `sudo su`
                 if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and conditions3:
@@ -58,10 +59,12 @@ def root_users():
                     days[date]["*" + user] += 1 # A.2.
                 # "..."; identifies users who successfully switched users using `sudo su <username>`
                 elif conditions and fields[-1] != "root": 
-                    days[date]["-" + user] += 1 # A.2.
+                    victim = fields[14]
+                    daysv2[date]["-" + user][victim] += 1 # B.2. !!!!EXPLAIN WHAT IT DOES AND HOW IT WORKS!!!!
                 # "..."; identifies users who unsuccessfully switched users using `sudo su <username>`
                 elif conditions2 and fields[-1] != "root":
-                    days[date]["/" + user] += 1 # A.2.
+                    victim = fields[19]
+                    daysv2[date]["/" + user][victim] += 1 # B.2.
 
             if fields[4].startswith("su["):
                 # root by <username>
@@ -81,33 +84,51 @@ def root_users():
                 # "Successful su for <username> by <username>"; identifies users who've successfully switched users using `su <username>`
                 elif fields[5] == "Successful" and conditions5:
                     user = fields[-1]
-                    days[date]["-" + user] += 1 # A.2. 
+                    victim = fields[-3]
+                    daysv2[date]["-" + user][victim] += 1 # B.2. 
                 # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
                 elif fields[5] == "FAILED" and conditions5:
                     user = fields[-1]
-                    days[date]["/" + user] += 1 # A.2.
+                    victim = fields[-3]
+                    daysv2[date]["/" + user][victim] += 1 # B.2.
+
+   
+    def rename():
+        for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
+            end_of_sentence = str(counter) + (" time" if count == 1 else " times")
+            print("       ", victim, end_of_sentence)
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
         users = days[start_date]
-        if users:
-            for user, count in users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
+        victims = daysv2[start_date]
+
+        # A.3.
+        if users: 
+            for user, count in  users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
                 end_of_sentence = str(count) + (" time" if count == 1 else " times")
 
                 if "~" in user:
                     print("   ", user, "is not in the sudoers file and tried to execute a command with root privilege", end_of_sentence)
                 elif "+" in user:
                     print("   ", user, "became root", end_of_sentence)
-                elif "-" in user:
-                    print("   ", user, "switched users", end_of_sentence)
                 elif "*" in user:
                     print("   ", user, "tried to become root", end_of_sentence)
-                elif "/" in user:
-                    print("   ", user, "tried to switch users", end_of_sentence)
         else:
             print("    No one became root")
-        start_date += timedelta(days=1)
 
-    print(days)
+        # B.3.
+        if victims:
+            for user, count in  victims.items():
+                if "-" in user:
+                    print("   ", user, "switched to")
+                    rename()
+                elif "/" in user:
+                    print("   ", user, "tried to switch to")
+                    rename()
+        else:
+            print("    No one switched users")
+
+        start_date += timedelta(days=1)
 
 root_users()
