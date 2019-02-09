@@ -104,7 +104,7 @@ def root_users():
 
     def rename():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
-            end_of_sentence = str(counter) + (" time\n" if count == 1 else " times\n")
+            end_of_sentence = str(counter) + (" time\n" if counter == 1 else " times\n")
             log.write("       " + victim + " " + end_of_sentence)
             #print("       ", victim, end_of_sentence) # C.1.
 
@@ -118,16 +118,17 @@ def root_users():
         if users:
             for user, count in users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
                 end_of_sentence = str(count) + (" time\n" if count == 1 else " times\n")
+                end_of_sentence_print = str(count) + (" time" if count == 1 else " times")
                 
                 if "~" in user:
                     log.write("    " + user + " is not in the sudoers file and tried to execute a command with root privilege " + end_of_sentence)
-                    #print("   ", user, "is not in the sudoers file and tried to execute a command with root privilege", end_of_sentence) # C.1.
+                    #print("   ", user, "is not in the sudoers file and tried to execute a command with root privilege", end_of_sentence_print) # C.1.
                 elif "+" in user:
                     log.write("    " + user + " became root " + end_of_sentence)
-                    #print("   ", user, "became root", end_of_sentence) # C.1.
+                    #print("   ", user, "became root", end_of_sentence_print) # C.1.
                 elif "*" in user:
                     log.write("    " + user + " tried to become root " + end_of_sentence)
-                    #print("   ", user, "tried to become root", end_of_sentence) # C.1.
+                    #print("   ", user, "tried to become root", end_of_sentence_print) # C.1.
         else:
             log.write("    No one became root\n")
             #print("    No one became root") # C.1.
@@ -149,7 +150,8 @@ def root_users():
 
         start_date += timedelta(days=1)
 
-    log.write("*****************************************************+-*/\n" if users else "*****************************************************\n")
-
+    log.write("+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/\n" if users or victim else "*****************************************************\n")
+    #print("+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/\n" if users or victim else "*****************************************************\n")
+    
 root_users()
 log.close()

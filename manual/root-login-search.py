@@ -95,7 +95,7 @@ def root_users():
    
     def rename():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
-            end_of_sentence = str(counter) + (" time" if count == 1 else " times")
+            end_of_sentence = str(counter) + (" time" if counter == 1 else " times")
             print("       ", victim, end_of_sentence)
 
     while start_date <= today:
