@@ -45,7 +45,7 @@ def root_users():
             if fields[4] == "sudo:":
                 user = fields[5]
                 # successful
-                conditions = user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
+                conditions = user != "root" and (fields[8] != "incorrect" and fields[8] != "NOT" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
                 # unsuccessful
                 conditions2 = user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
                 # `sudo su`...
@@ -105,8 +105,9 @@ def root_users():
     def rename():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
             end_of_sentence = str(counter) + (" time\n" if counter == 1 else " times\n")
+            #end_of_sentence_print = str(count) + (" time" if count == 1 else " times") # C.1.
             log.write("       " + victim + " " + end_of_sentence)
-            #print("       ", victim, end_of_sentence) # C.1.
+            #print("       ", victim, end_of_sentence_print) # C.1.
 
     while start_date <= today:
         log.write(start_date.strftime("On %b %d:\n"))
@@ -118,7 +119,7 @@ def root_users():
         if users:
             for user, count in users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
                 end_of_sentence = str(count) + (" time\n" if count == 1 else " times\n")
-                end_of_sentence_print = str(count) + (" time" if count == 1 else " times")
+                #end_of_sentence_print = str(count) + (" time" if count == 1 else " times") # C.1.
                 
                 if "~" in user:
                     log.write("    " + user + " is not in the sudoers file and tried to execute a command with root privilege " + end_of_sentence)

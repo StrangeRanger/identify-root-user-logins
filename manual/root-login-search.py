@@ -36,7 +36,7 @@ def root_users():
             if fields[4] == "sudo:":
                 user = fields[5]
                 # successful
-                conditions = user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
+                conditions = user != "root" and (fields[8] != "incorrect" and fields[8] != "NOT" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
                 # unsuccessful
                 conditions2 = user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
                 # `sudo su`...
