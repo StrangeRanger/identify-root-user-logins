@@ -105,7 +105,7 @@ def root_users():
     def section_two():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
             end_of_sentence = str(counter) + (" time\n" if counter == 1 else " times\n")
-            #end_of_sentence_print = str(count) + (" time" if count == 1 else " times") # C.1.
+            #end_of_sentence_print = str(counter) + (" time" if counter == 1 else " times") # C.1.
             log.write("       " + victim + " " + end_of_sentence)
             #print("       ", victim, end_of_sentence_print) # C.1.
 
