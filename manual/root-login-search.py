@@ -93,7 +93,7 @@ def root_users():
                     daysv2[date]["/" + user][victim] += 1 # B.2.
 
    
-    def rename():
+    def section_two():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
             end_of_sentence = str(counter) + (" time" if counter == 1 else " times")
             print("       ", victim, end_of_sentence)
@@ -122,10 +122,10 @@ def root_users():
             for user, count in  victims.items():
                 if "-" in user:
                     print("   ", user, "switched to")
-                    rename()
+                    section_two()
                 elif "/" in user:
                     print("   ", user, "tried to switch to")
-                    rename()
+                    section_two()
         else:
             print("    No one switched users")
 
