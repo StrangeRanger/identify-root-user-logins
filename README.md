@@ -35,6 +35,8 @@ The script was created for the purpose of identifying users, on a linux based sy
 - Debian
   - Jessie: Unknown
   - Stretch: Works
+- Redhat
+  - DOES NOT WORK
 - "More will be tested in the future"
 
 # Other Notes
