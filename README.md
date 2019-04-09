@@ -22,7 +22,7 @@ The script was created for the purpose of identifying users, on a linux based sy
 - The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into.
 
 # What It Doesn't Do
-- The script will not identify the root user for anything, even if it does/meets the requirements/identifiers that are mentioned above
+- The script will not identify the root user itself for anything, even if it does/meets the requirements/identifiers that are mentioned above. This means that if for some reason root changes to another user, the script will not identify root doing this.
 
 ## Requirements
 - Python 3.x
