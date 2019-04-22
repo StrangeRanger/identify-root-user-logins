@@ -5,6 +5,9 @@ class DateError(Exception):
     pass
 
 N = 7 # number of days that will be checked that came before today: N = 1 means that today's and yesterday's logs will be checked
+red = '\033[1;31m'
+green = '\033[0;32m'
+defaultc = '\033[0m'
 
 def root_users():
     today = datetime.now().date()
@@ -95,8 +98,8 @@ def root_users():
    
     def section_two():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
-            end_of_sentence = str(counter) + (" time" if counter == 1 else " times")
-            print("       ", victim, end_of_sentence)
+            end_of_sentence = str(counter) + (" time" + defaultc if counter == 1 else " times" + defaultc)
+            print("      {} {} {}".format(red, victim, end_of_sentence))
 
     while start_date <= today:
         print(start_date.strftime("On %b %d:"))
@@ -105,29 +108,29 @@ def root_users():
 
         # A.3.
         if users: 
-            for user, count in  users.items(): # user, count is used because we're reading from a counter; which is a dict that maps username to count of occurrences
-                end_of_sentence = str(count) + (" time" if count == 1 else " times")
+            for user, count in users.items(): # user, count is used because we're reading from a counter, which is a dict that maps username to count of occurrences
+                end_of_sentence = str(count) + (" time" + defaultc if count == 1 else " times" + defaultc)
 
                 if "~" in user:
-                    print("   ", user, "is not in the sudoers file and tried to execute a command with root privilege", end_of_sentence)
+                    print("{}   {} is not in the sudoers file and tried to execute a command with root privilege {}".format(red, user, end_of_sentence))
                 elif "+" in user:
-                    print("   ", user, "became root", end_of_sentence)
+                    print("{}   {} became root {}".format(red, user, end_of_sentence))
                 elif "*" in user:
-                    print("   ", user, "tried to become root", end_of_sentence)
+                    print("{}   {} tried to become root {}".format(red, user, end_of_sentence))
         else:
-            print("    No one became root")
+            print("{}    No one became root {}".format(green, defaultc))
 
         # B.3.
         if victims:
             for user, count in  victims.items():
                 if "-" in user:
-                    print("   ", user, "switched to")
+                    print("{}   {} switched to".format(red, user))
                     section_two()
                 elif "/" in user:
-                    print("   ", user, "tried to switch to")
+                    print("{}   {} tried to switch to".format(red, user))
                     section_two()
         else:
-            print("    No one switched users")
+            print("{}    No one switched users{}".format(green, defaultc))
 
         start_date += timedelta(days=1)
 
