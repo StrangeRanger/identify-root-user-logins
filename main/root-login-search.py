@@ -5,9 +5,10 @@ class DateError(Exception):
     pass
 
 N = 7 # number of days that will be checked that came before today: N = 1 means that today's and yesterday's logs will be checked
-red = '\033[1;31m'
-green = '\033[0;32m'
-defaultc = '\033[0m'
+red = "\033[1;31m"
+cyan  = "\033[1;36m"
+green = "\033[0;32m"
+defaultc = "\033[0m"
 
 def root_users():
     today = datetime.now().date()
@@ -29,7 +30,7 @@ def root_users():
                 date = datetime.strptime(date_str + str(last_year), "%b %d %Y").date()
               # will skip any abnormal/non-regular text in /var/log/auth.log that could produce an Error, and then prints out a message telling the user to check out the line in the file.
             except ValueError:
-                print("There was an abnormality in /var/log/auth.log: {}\n".format(line))
+                print("{}There was an abnormality in /var/log/auth.log: {}{}\n".format(cyan, line, defaultc))
                 continue
 
             if (date < start_date):
