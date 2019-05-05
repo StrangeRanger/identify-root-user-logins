@@ -8,7 +8,7 @@ N = 7 # number of days that will be checked that came before today: N = 1 means 
 red = "\033[1;31m"
 cyan  = "\033[1;36m"
 green = "\033[0;32m"
-defaultc = "\033[0m"
+defclr = "\033[0m"
 
 def root_users():
     today = datetime.now().date()
@@ -30,7 +30,7 @@ def root_users():
                 date = datetime.strptime(date_str + str(last_year), "%b %d %Y").date()
               # will skip any abnormal/non-regular text in /var/log/auth.log that could produce an Error, and then prints out a message telling the user to check out the line in the file.
             except ValueError:
-                print("{}There was an abnormality in /var/log/auth.log: {}{}\n".format(cyan, line, defaultc))
+                print("{}There was an abnormality in /var/log/auth.log: {}{}\n".format(cyan, line, defclr))
                 continue
 
             if (date < start_date):
@@ -99,7 +99,7 @@ def root_users():
    
     def section_two():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
-            end_of_sentence = str(counter) + (" time" + defaultc if counter == 1 else " times" + defaultc)
+            end_of_sentence = str(counter) + (" time" + defclr if counter == 1 else " times" + defclr)
             print("      {} {} {}".format(red, victim, end_of_sentence))
 
     while start_date <= today:
@@ -110,7 +110,7 @@ def root_users():
         # A.3.
         if users: 
             for user, count in users.items(): # user, count is used because we're reading from a counter, which is a dict that maps username to count of occurrences
-                end_of_sentence = str(count) + (" time" + defaultc if count == 1 else " times" + defaultc)
+                end_of_sentence = str(count) + (" time" + defclr if count == 1 else " times" + defclr)
 
                 if "~" in user:
                     print("{}   {} is not in the sudoers file and tried to execute a command with root privilege {}".format(red, user, end_of_sentence))
@@ -119,7 +119,7 @@ def root_users():
                 elif "*" in user:
                     print("{}   {} tried to become root {}".format(red, user, end_of_sentence))
         else:
-            print("{}    No one became root {}".format(green, defaultc))
+            print("{}    No one became root {}".format(green, defclr))
 
         # B.3.
         if victims:
@@ -131,7 +131,7 @@ def root_users():
                     print("{}   {} tried to switch to".format(red, user))
                     section_two()
         else:
-            print("{}    No one switched users{}".format(green, defaultc))
+            print("{}    No one switched users{}".format(green, defclr))
 
         start_date += timedelta(days=1)
 
