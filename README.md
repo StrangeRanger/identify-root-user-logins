@@ -29,12 +29,13 @@ The script was created for the purpose of identifying users, on a linux based sy
 
 ## Linux Distros That The Script Works On:
 - Ubuntu
-  - Trusty Tahr: Unknown
+  - Bionic Beaver: N/A
   - Xenial Xerus: Works
-  - Bionic Beaver: Unknown
+  - Trusty Tahr and before: N/A
 - Debian
-  - Jessie: Unknown
+  - Buster: DOES NOT WORK; version of script that works on [Buster](https://github.com/StrangeRanger/identify-root-user-logins)
   - Stretch: Works
+  - Jessie and before: N/A
 - Redhat
   - DOES NOT WORK
 - "More will be tested in the future"
