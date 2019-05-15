@@ -29,7 +29,7 @@ The script was created for the purpose of identifying users, on a linux based sy
 
 ## Linux Distros That The Script Works On:
 - Ubuntu
-  - Bionic Beaver: N/A
+  - Bionic Beaver: Works
   - Xenial Xerus: Works
   - Trusty Tahr and before: N/A
 - Debian
