@@ -116,7 +116,7 @@ def root_users():
                 elif "*" in user:
                     print("{}   {} tried to become root {}".format(red, user, end_of_sentence))
         else:
-            print("{}    No one became root {}".format(green, defclr))
+            print("{}   No one became root {}".format(green, defclr))
 
         # B.3.
         if victims:
@@ -128,7 +128,7 @@ def root_users():
                     print("{}   {} tried to switch to".format(red, user))
                     section_two()
         else:
-            print("{}    No one switched users{}".format(green, defclr))
+            print("{}   No one switched users{}".format(green, defclr))
 
         start_date += timedelta(days=1)
 
