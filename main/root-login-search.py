@@ -44,56 +44,53 @@ def root_users():
                 # unsuccessful
                 conditions2 = user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
                 # `sudo su`...
-                conditions3 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash", "COMMAND=/bin/sh", "COMMAND=/bin/su")
+                conditions3 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/su")
+                # `sudo -i` and `sudo bash`
+                conditions35 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash") 
 
                 # "..."; identifies users who are not in the sudoers file and tried to execute a command with root privilege
                 if user != "root" and (fields[8] == "NOT" and fields[10] == "sudoers" and fields[16] == "USER=root" and fields[18].startswith("COMMAND=") if len(fields) >= 9 else None):
-                    days[date]["~" + user] += 1
-                # "..."; identifies users who successfully became root using `sudo su`
-                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and conditions3:
-                    days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter
+                	days[date]["~" + user] += 1
+                # "..."; identifies users who successfully became root using `sudo bash` or `sudo -i`
+                if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and conditions35:
+                	days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter 
+                # "..."; identifies users who unsuccessfully became root using `sudo bash` or `sudo -i`
+                elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and conditions35:
+                	days[date]["*" + user] += int(fields[7]) # A.2.
                 # "..."; identifies users who unsuccessfully became root using `sudo su`
                 elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and conditions3:
-                    days[date]["*" + user] += 1 # A.2.
-                # "..."; identifies users who successfully became root using `sudo su root`
-                elif conditions and fields[-1] == "root":
-                    days[date]["+" + user] += 1 # A.2.
+                    days[date]["*" + user] += int(fields[7]) # A.2.
                 # "..."; identifies users who unsuccessfully became root using `sudo su root`
                 elif conditions2 and fields[-1] == "root":
-                    days[date]["*" + user] += 1 # A.2.
-                # "..."; identifies users who successfully switched users using `sudo su <username>`
-                elif conditions and fields[-1] != "root": 
-                    victim = fields[14]
-                    daysv2[date]["-" + user][victim] += 1 # B.2. !!!!EXPLAIN WHAT IT DOES AND HOW IT WORKS!!!!
+                    days[date]["*" + user] += int(fields[7]) # A.2.
                 # "..."; identifies users who unsuccessfully switched users using `sudo su <username>`
                 elif conditions2 and fields[-1] != "root":
                     victim = fields[19]
-                    daysv2[date]["/" + user][victim] += 1 # B.2.
+                    daysv2[date]["/" + user][victim] += int(fields[7]) # B.2.
 
-            if fields[4].startswith("su["):
-                # root by <username>
-                conditions4 = fields[-3] == "root" and fields[-1] != "root"
-                # <username> by <username>
-                conditions5 = fields[-3] != "root" and fields[-1] != "root"
+            if fields[4].startswith("su:"):
+                # (to root) <username>
+                conditions4 = fields[-4] == "root)" and fields[-3] != "root" 
+                # (to <victim_username>) <username>
+                conditions5 = fields[-4] != "root)" and fields[-3] != "root"
 
-                ### when a way is found, make it so that the severity level is greater with the ones below. "Change your password...<> knows your password"
-                # "Successful su for root by <username>"; identifies users who've successfully became root using `su` and/or `su root`
-                if fields[5] == "Successful" and conditions4:
-                    user = fields[-1]
+                # "(to root) <username> on pts/<n>"; identifies users who've successfully became root using `su`, `su root`, `sudo su`, or `sudo su root`
+                if " ".join(fields[5:7]) == "(to root)" and conditions4:
+                    user = fields[-3]
                     days[date]["+" + user] += 1 # A.2.
-                # "FAILED su for root by <username>"; identifies users who've unsuccessfully became root using `su` and/or `su root`
-                elif fields[5] == "FAILED" and conditions4:
-                    user = fields[-1]
+                # "FAILED SU (to root) <username> on pts/<n>"; identifies users who've unsuccessfully became root using `su` and/or `su root`
+                elif " ".join(fields[5:7]) == "FAILED SU" and conditions4:
+                    user = fields[-3]
                     days[date]["*" + user] += 1 # A.2.
-                # "Successful su for <username> by <username>"; identifies users who've successfully switched users using `su <username>`
-                elif fields[5] == "Successful" and conditions5:
-                    user = fields[-1]
-                    victim = fields[-3]
+                # "(to <victim_username>) <username> on pts/<n>"; identifies users who've successfully switched users using `su <victim_username>` or `sudo su <victim_username>`
+                elif fields[5] == "(to" and conditions5:
+                    user = fields[-3]
+                    victim = fields[-4].replace(")", "")
                     daysv2[date]["-" + user][victim] += 1 # B.2. 
-                # "FAILED su for <username> by <username>"; identifies users who've unsuccessfully switched users using `su <username>`
-                elif fields[5] == "FAILED" and conditions5:
-                    user = fields[-1]
-                    victim = fields[-3]
+                # "FAILED SU (to <victim_username>) <username> on pts/<n>"; identifies users who've unsuccessfully switched users using `su <victim_username>`
+                elif " ".join(fields[5:7]) == "FAILED SU" and conditions5:
+                    user = fields[-3]
+                    victim = fields[-4].replace(")", "")
                     daysv2[date]["/" + user][victim] += 1 # B.2.
 
    
