@@ -30,11 +30,11 @@ The script was created for the purpose of identifying users, on a linux based sy
 ## Linux Distros That The Script Works On:
 - Ubuntu
   - Bionic Beaver: N/A
-  - Xenial Xerus: DOES NOT WORK; version of script that works on [Xenial Xerus](https://github.com/StrangeRanger/identify-root-user-logins/tree/master) 
+  - Xenial Xerus: DOES NOT WORK; version of script that works on [Xenial Xerus](https://github.com/StrangeRanger/identify-root-user-logins/tree/Debian-9-stable) 
   - Trusty Tahr and before: N/A
 - Debian
   - Buster: Works 
-  - Stretch: DOES NOT WORK; version of script that works on [Stretch](https://github.com/StrangeRanger/identify-root-user-logins/tree/master)
+  - Stretch: DOES NOT WORK; version of script that works on [Stretch](https://github.com/StrangeRanger/identify-root-user-logins/tree/Debian-9-stable)
   - Jessie and before: N/A
 - Redhat
   - DOES NOT WORK
