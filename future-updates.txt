@@ -1,2 +1,1 @@
-- Do more testing with script to make sure the identification of users...: "user NOT in sudoers file"... is working properly
 - Trying to fix bugs/faults in script (look at README.md for more info)
