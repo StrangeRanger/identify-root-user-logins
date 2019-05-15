@@ -1,2 +1,2 @@
-- Do more testing with script to make sure the identification of users...: "user NOT in sudoers file"... is working properly
 - Trying to fix bugs/faults in script (look at README.md for more info)
+- Fix bug that prevents all failed attempts to be identified (look at B.2. on master branch main script for reference)
