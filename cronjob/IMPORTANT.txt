@@ -1,0 +1,1 @@
+This script has not been update with the code used in the main script. It will not work on debian 10 at the moment.
