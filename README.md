@@ -24,6 +24,7 @@ The script was created for the purpose of identifying users, on a linux based sy
 # What It Doesn't Do
 - The script will not identify the root user itself for anything, even if it does/meets the requirements/identifiers that are mentioned above. This means that if for some reason root changes to another user, the script will not identify root doing this.
 
+# Stystem Related Information
 ## Requirements
 - Python 3.x
 
