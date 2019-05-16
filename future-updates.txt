@@ -1,1 +1,9 @@
+Main specific:
+- Continue testing to make sure, new version does not brake
+- Update and add more documentation
+
+Cronjob specific:
+- Apply fixes for flaw in main script, to cronjob script
+
+Global/general:
 - Trying to fix bugs/faults in script (look at README.md for more info)
