@@ -18,7 +18,6 @@ def root_users():
 	days = collections.defaultdict(collections.Counter) # A.1. a defaultdict that maps objects (dates and users) to a counter
 	daysv2 = collections.defaultdict(lambda: collections.defaultdict(collections.Counter)) # B.1. two nested defaultdicts that map objects (dates, users, and victims) to a counter
 
-
 	def identifying_text(file):
 		for line in file:
 			fields = line.split() 
@@ -37,7 +36,6 @@ def root_users():
 			if (date < start_date):
 				# too old for interest
 				continue 
-			
 			# "user : TTY=tty/1 ; PWD=/home/user ; USER=root ; COMMAND=/bin/su"
 			if fields[4] == "sudo:":
 				user = fields[5]
@@ -47,16 +45,16 @@ def root_users():
 				conditions2 = user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
 				# `sudo su`...
 				conditions3 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/su")
-				# `sudo -i` and `sudo bash`
-				conditions35 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash") 
+				# `sudo -i` and `sudo bash` # D.1. purpousfully seperated from conditions3, else when previous commands are used, the number of times a user attemps to log into an account becomes twice as many as actual; this is due to .... (explain further....)
+				conditions35 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash")
 
 				# "..."; identifies users who are not in the sudoers file and tried to execute a command with root privilege
 				if user != "root" and (fields[8] == "NOT" and fields[10] == "sudoers" and fields[16] == "USER=root" and fields[18].startswith("COMMAND=") if len(fields) >= 9 else None):
 					days[date]["~" + user] += 1
-				# "..."; identifies users who successfully became root using `sudo bash` or `sudo -i`
+				# "..."; identifies users who successfully became root using `sudo bash` or `sudo -i` # D.1.
 				if user != "root" and (fields[8] != "incorrect" if len(fields) >= 9 else None) and conditions35:
 					days[date]["+" + user] += 1 # A.2. The defaultdict key becomes the date and its value, which is the counter, is the user, which gains a plus 1 in the counter 
-				# "..."; identifies users who unsuccessfully became root using `sudo bash` or `sudo -i`
+				# "..."; identifies users who unsuccessfully became root using `sudo bash` or `sudo -i` # D.1.
 				elif user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and conditions35:
 					days[date]["*" + user] += int(fields[7]) # A.2.
 				# "..."; identifies users who unsuccessfully became root using `sudo su`
@@ -95,13 +93,13 @@ def root_users():
 					victim = fields[-4].replace(")", "")
 					daysv2[date]["/" + user][victim] += 1 # B.2.
 
+	
 	# looks through "auth.log.1" if starting date is not located in "auth.log" then continues through "auth.log"
 	with open("/var/log/auth.log", "r") as txt:
 		identifying_text(txt)
 		if start_date.strftime("On %b %d:").replace(" 0", "  ") not in txt:
 		 	with open("/var/log/auth.log.1", "r") as txt1:
-		 		identifying_text(txt1)
-		 		
+		 		identifying_text(txt1)	 		
 
 	def section_two():
 		for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
