@@ -18,7 +18,7 @@ The script was created for the purpose of identifying users, on a linux based sy
   - Method of weeding out true culprit: Look through the auth.log at the logs taken on the given day that the incident took place... To know what to look for, please refer to "identifying-patterns.odt"; it contains all auth.log logs that are created in relation to the given commands and there relative success or failure...
 
 ## Flaws (that will be fixed, hopefully, in the future)
-- If a user inputs their sudo password correctly when executing `sudo su <username>`, but the username does not exist, they will not be marked at all. It is prefered that they are instead marked as someone who tried to log into `<username>`.
+- If a user inputs their sudo password correctly when executing `sudo su <username>`, but the username does not exist, they will not be marked at all. 
 - If a user executes `su <username>`, where username is that of a user that is not on the system, it will not be logged/identified as a user who tried to be switched to.
 - The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into. This currently only applies to the cronjob version of the script.
 
@@ -41,4 +41,3 @@ The script was created for the purpose of identifying users, on a linux based sy
 - Redhat
   - DOES NOT WORK
 - "More will be tested in the future"
-
