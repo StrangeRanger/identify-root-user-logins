@@ -11,18 +11,18 @@ Currently, the only to maintain the logs is by manually going in and deleting al
 # Using SMTP To Send Scan Report Via Email (Optional)
 If you want to use SMTP and Mail to send yourself the results of the scan by email you will want to do a few things to the script.
 - Inside the script, uncomment all commented out `print` lines that have "B.1." at the end of them. This will print all the same info that is written to the log.
-- Instead of entering the cronjob setting listed in the "Important Notes", use this: `58 23 * * * python3 /location/of/root-login-search-cronjob.py | mail -s "root-login-search-cronjob results" {email of recipient}`.
+- Instead of entering the cronjob setting listed in the "Important Notes", use this: `58 23 * * * python3 /location/of/root-login-search-cronjob.py | mail -s "root-login-search-cronjob results" <email of recipient>`.
 
 ## Email/SMTP Troubleshooting
 Depending on flavor of linux, the above cronjob may not work, the email does not send, or the email does get sent but it contains nothing. There are a few things that you can do/try, to fix a problem:
-- Remove email from the cronjob and create a variable above it that says `MAILTO={email of recipient}`. This is what it would look like (just don't forget to add your own email to the MAILTO variable):
+- Remove email from the cronjob and create a variable above it that says `MAILTO=<email of recipient>`. This is what it would look like (just don't forget to add your own email to the MAILTO variable):
   ```sh
-  MAILTO={email of recipient}
+  MAILTO=<email of recipient>
   58 23 * * * python3 /location/of/root-login-search-cronjob.py | mail -s "root-login-search-cronjob results" $MAILTO
   ```
 - Instead of executing the script from a directory that does not contain the script, first move to that directory and then execute script. This is what is would look like:
   ```sh
-  58 23 * * * cd /directory/containing/root-login-search-cronjob.py && python3 root-login-search-cronjob.py | mail -s "root-login-search-cronjob results" {email of recipient}
+  58 23 * * * cd /directory/containing/root-login-search-cronjob.py && python3 root-login-search-cronjob.py | mail -s "root-login-search-cronjob results" <email of recipient>
   ```
 - If those don't work you can try combining both of them.
 - Check your SMTP configuration, which are locate here: `/etc/ssmtp/ssmtp.conf`.
@@ -37,6 +37,3 @@ Here are a few links to help you get started in setting up with SMTP
 # Other Notes
 ## Script Notes
 By default, the auth.log will only be scanned for logs written on the current day and the day before. If the time that the cronjob is executed is based off of when they. If you wish to change the number of days, change the value of N in the script.
-
-## Non-Script Notes
-Anywhere, inside of this README.md, that you see `{}` with text inside, are things that you substitute with whatever is described between the curly brackets: `{username}` will be replaced with the your username such as `StrangeRanger`.
