@@ -45,7 +45,7 @@ def root_users():
 				conditions2 = user != "root" and (fields[8] == "incorrect" if len(fields) >= 9 else None) and fields[-4] == "USER=root" and fields[-2] == "COMMAND=/bin/su"
 				# `sudo su`...
 				conditions3 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/su")
-				# `sudo -i` and `sudo bash` # D.1. purpousfully seperated from conditions3, else when previous commands are used, the number of times a user attemps to log into an account becomes twice as many as actual; this is due to .... (explain further....)
+				# `sudo -i` and `sudo bash` # D.1. purpousfully seperated from conditions3, else when previous commands are used, the number of times a user attemps to log into an account becomes twice as many as actual; without writing a paragaph, this is due to what text is being looked for, and what is produced when the commands above are (in this comment) are executed)
 				conditions35 = fields[-3] == "USER=root" and fields[-1] in ("COMMAND=/bin/bash")
 
 				# "..."; identifies users who are not in the sudoers file and tried to execute a command with root privilege

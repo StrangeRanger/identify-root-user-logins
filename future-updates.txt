@@ -1,9 +1,11 @@
 Main specific:
-- Continue testing to make sure, new version does not brake
-- Update and add more documentation
+- Continue testing to make sure, new version does not brake (priority = ??)
+- Update and add more documentation (priority = 4)
 
 Cronjob specific:
-- Apply fixes for flaw in main script, to cronjob script
+- Apply fixes for flaw in main script, to cronjob script (priority = 8)
+- Create a script to auto-setup log file and log rotation (priority = 10)
+- Create a scirpt to remove log file and log rotation (priority = 10)
 
 Global/general:
-- Trying to fix bugs/faults in script (look at README.md for more info)
+- Trying to fix bugs/faults in script (look at README.md for more info) (priority = 8)
