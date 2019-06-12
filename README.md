@@ -34,7 +34,7 @@ The script was created for the purpose of identifying users, on a linux based sy
   - Xenial Xerus: Works
   - Trusty Tahr and before: N/A
 - Debian
-  - Buster: DOES NOT WORK; version of script that works on [Buster](https://github.com/StrangeRanger/identify-root-user-logins)
+  - Buster: DOES NOT WORK; version of script that works on [Buster](https://github.com/StrangeRanger/identify-root-user-logins/tree/Debian-10)
   - Stretch: Works
   - Jessie and before: N/A
 - Redhat
