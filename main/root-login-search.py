@@ -98,8 +98,11 @@ def root_users():
 	with open("/var/log/auth.log", "r") as txt:
 		identifying_text(txt)
 		if start_date.strftime("On %b %d:").replace(" 0", "  ") not in txt:
-		 	with open("/var/log/auth.log.1", "r") as txt1:
-		 		identifying_text(txt1)	 		
+		 	try:
+				with open("/var/log/secure.1", "r") as txt1:
+		 			identifying_text(txt1)	 
+			except IOError:
+				None	 		
 
 	def section_two():
 		for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
