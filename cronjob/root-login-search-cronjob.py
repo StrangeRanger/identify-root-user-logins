@@ -106,7 +106,7 @@ def root_users():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
             end_of_sentence = str(counter) + (" time\n" if counter == 1 else " times\n")
             #end_of_sentence_print = str(counter) + (" time" if counter == 1 else " times") # C.1.
-            log.write("       " + victim + " " + end_of_sentence)
+            log.write("     " + victim + " " + end_of_sentence)
             #print("       ", victim, end_of_sentence_print) # C.1.
 
     while start_date <= today:
@@ -122,31 +122,31 @@ def root_users():
                 #end_of_sentence_print = str(count) + (" time" if count == 1 else " times") # C.1.
                 
                 if "~" in user:
-                    log.write("    " + user + " is not in the sudoers file and tried to execute a command with root privilege " + end_of_sentence)
+                    log.write("   " + user + " is not in the sudoers file and tried to execute a command with root privilege " + end_of_sentence)
                     #print("   ", user, "is not in the sudoers file and tried to execute a command with root privilege", end_of_sentence_print) # C.1.
                 elif "+" in user:
-                    log.write("    " + user + " became root " + end_of_sentence)
+                    log.write("   " + user + " became root " + end_of_sentence)
                     #print("   ", user, "became root", end_of_sentence_print) # C.1.
                 elif "*" in user:
-                    log.write("    " + user + " tried to become root " + end_of_sentence)
+                    log.write("   " + user + " tried to become root " + end_of_sentence)
                     #print("   ", user, "tried to become root", end_of_sentence_print) # C.1.
         else:
-            log.write("    No one became root\n")
+            log.write("   No one became root\n")
             #print("    No one became root") # C.1.
 
         # B.3.
         if victims:
             for user, count in  victims.items():
                 if "-" in user:
-                    log.write("    " + user + " switched to\n")
+                    log.write("   " + user + " switched to\n")
                     #print("   ", user, "switched to") # C.1.
                     section_two()
                 elif "/" in user:
-                    log.write("    " + user + " tried to switch to\n")
+                    log.write("   " + user + " tried to switch to\n")
                     #print("   ", user, "tried to switch to") # C.1.
                     section_two()
         else:
-            log.write("    No one switched users\n")
+            log.write("   No one switched users\n")
             #print("    No one switched users") # C.1.
 
         start_date += timedelta(days=1)
