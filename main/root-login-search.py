@@ -98,16 +98,16 @@ def root_users():
 	with open("/var/log/auth.log", "r") as txt:
 		identifying_text(txt)
 		if start_date.strftime("On %b %d:").replace(" 0", "  ") not in txt:
-		 	try:
-				with open("/var/log/secure.1", "r") as txt1:
-		 			identifying_text(txt1)	 
+			try:
+				with open("/var/log/auth.log.1", "r") as txt1:
+					identifying_text(txt1)	 
 			except IOError:
-				None	 		
+				None			
 
 	def section_two():
 		for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
 			end_of_sentence = str(counter) + (" time" + defclr if counter == 1 else " times" + defclr)
-			print("      {} {} {}".format(red, victim, end_of_sentence))
+			print("     {} {} {}".format(red, victim, end_of_sentence))
 
 	while start_date <= today:
 		print(start_date.strftime("On %b %d:"))
