@@ -154,4 +154,4 @@ def root_users():
     log.write("+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/+-*/\n" if users or victims else "*****************************************************\n")
     
 root_users()
-log.close()
+log.close() 
