@@ -37,6 +37,9 @@ The script was created for the purpose of identifying users, on a linux based sy
   - Buster: DOES NOT WORK; version of script that works on [Buster](https://github.com/StrangeRanger/identify-root-user-logins/tree/Debian-10)
   - Stretch: Works
   - Jessie and before: N/A
+- Kali
+  - 2019.2: DOES NOT WORK; version of script that works on [2019.2](https://github.com/StrangeRanger/identify-root-user-logins/tree/Debian-10)
+  - 2019.1 and before: N/A
 - Redhat
   - DOES NOT WORK
 - "More will be tested in the future"
