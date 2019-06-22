@@ -22,6 +22,9 @@ The script was created for the purpose of identifying users, on a linux based sy
 - If a user executes `su <username>`, where username is that of a user that is not on the system, it will not be logged/identified as a user who tried to be switched to.
 - The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into. This currently only applies to the cronjob version of the script.
 
+# Other Notes
+- When an individual logs into the root accounts, whether it be via `sudo su` or `su`, then as root use `sudo su` or `su`, that user will be identified twice. Even though the user changed to the root user, the script will still identify them as a user who logged into the root account.
+
 # What It Doesn't Do
 - The script will not identify the root user itself for anything, even if it does/meets the requirements/identifiers that are mentioned above. This means that if for some reason root changes to another user, the script will not identify root doing this.
 
@@ -38,6 +41,9 @@ The script was created for the purpose of identifying users, on a linux based sy
   - Buster: Works 
   - Stretch: DOES NOT WORK; version of script that works on [Stretch](https://github.com/StrangeRanger/identify-root-user-logins)
   - Jessie and before: N/A
+- Kali
+  - 2019.2: Works
+  - 2019.1 and before: N/A
 - Redhat
   - DOES NOT WORK
 - "More will be tested in the future"
