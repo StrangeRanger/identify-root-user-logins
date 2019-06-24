@@ -20,7 +20,6 @@ The script was created for the purpose of identifying users, on a linux based sy
 
 ## Flaws (that will be fixed, hopefully, in the future) (IMPORTANT)
 - If a user inputs their sudo password correctly when executing `sudo su <username>`, but the username does not exist, they will still be marked as `<username> has switched users <n> time(s)`.
-- The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into. This currently only applies to the cronjob version of the script.
 
 # What It Doesn't Do
 - The script will not identify the root user itself for anything, even if it does/meets the requirements/identifiers that are mentioned above. This means that if for some reason root changes to another user, the script will not identify root doing this.
