@@ -1,8 +1,11 @@
 # Cronjob and Main script Change/Update Log (Debian-10 Change Log) (major.minor.revision)
-Current main version: 4.2.0
-Current cron version: 3.1.0
+Current Main version: 4.2.0
+Current Cronjob version: 3.2.0
 
-## Main: 4.2.0 | Cron: 3.1.0
+## Cronjob: 3.2.0
+- Merged fixes for/from Main: 4.1.0 & 4.1.1 into Cronjob
+
+## Main: 4.2.0 | Cronjob: 3.1.0
 - Scripts are now compatible with Kali Linux version 2019.2
 
 ## Main: 4.1.1
