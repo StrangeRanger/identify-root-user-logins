@@ -22,7 +22,7 @@ The script was created for the purpose of identifying users, on a linux based sy
 
 
 ## Flaws (that will be fixed, hopefully, in the future) (IMPORTANT)
-- The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into. This currently only applies to the cronjob version of the script.
+- N/A
 
 # Other Notes
 - When an individual logs into the root accounts, whether it be via `sudo su` or `su`, then as root use `sudo su` or `su`, that user will be identified twice. Even though the user changed to the root user, the script will still identify them as a user who logged into the root account.
