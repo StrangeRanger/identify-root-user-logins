@@ -16,8 +16,10 @@ The script was created for the purpose of identifying users, on a linux based sy
 - If a user with sudo power, call him Mal, switches to another user who may or may not have sudo power, call him Vic, then uses `sudo` or `su`, will cause Vic to be blamed for executing the commands instead of Mal. Though, Mal must know Vic's password in order successfully use sudo. The best way to verify who actually did it is 
   - Semi-built in helper: Because the script will identify users who use `su` and `sudo su`, Mal will be identified as an individual who switched users.
   - Method of weeding out true culprit: Look through the auth.log at the logs taken on the given day that the incident took place... To know what to look for, please refer to "identifying-patterns.odt"; it contains all auth.log logs that are created in relation to the given commands and there relative success or failure...
+- If a user who is attempting to log into the root account or another user via `sudo su <username`, then uses "control + z" to quit the action, before the max password attempts are reached, the script will not be able to identify that user due to the needed logs not being created
 - Due to the systems lack of output, if a user tries to log into an account via `su <username>`, the script will not be able to identify that individual as bad user.
 - Due to how the script (has to) identifies users, if a user inputs their sudo password correctly when executing `sudo su <username>`, but the username does not exist, they will not be marked at all.
+
 
 ## Flaws (that will be fixed, hopefully, in the future) (IMPORTANT)
 - The linux system uses something called [logrotate](https://linux.die.net/man/8/logrotate) which causes the auth.log to be "rotated"/changed, usually weekly, at some point in the day. This means that if an individual tried logging into root, or any of the other possibilities, and the log was rotated before the script was executed, the individual would not be identified. A fix/work around is being looked into. This currently only applies to the cronjob version of the script.
