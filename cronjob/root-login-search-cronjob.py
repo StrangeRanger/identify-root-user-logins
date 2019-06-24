@@ -22,8 +22,8 @@ def root_users():
     days = collections.defaultdict(collections.Counter) # A.1. a defaultdict that maps objects (dates and users) to a counter
     daysv2 = collections.defaultdict(lambda: collections.defaultdict(collections.Counter)) # B.1. two nested defaultdicts that map objects (dates, users, and victims) to a counter
 
-    with open("/var/log/auth.log", "r") as txt: 
-        for line in txt:
+    def identifying_text(file): 
+        for line in file:
             fields = line.split() 
             date_str = " ".join(fields[0:2]) + " " 
             # makes sure that the log date is correct; if current date is January 01 2020 and looking a line in log with date Dec 31 that was logged in 2019, the date would = Dec 31 2020. Lines below prevent this.
@@ -99,6 +99,16 @@ def root_users():
                     daysv2[date]["/" + user][victim] += 1 # B.2.
 
 
+    # looks through "auth.log.1" if starting date is not located in "auth.log" then continues through "auth.log"
+    with open("/var/log/auth.log", "r") as txt:
+        identifying_text(txt)
+        if start_date.strftime("On %b %d:").replace(" 0", "  ") not in txt:
+            try:
+                with open("/var/log/auth.log.1", "r") as txt1:
+                    identifying_text(txt1)   
+            except IOError:
+                None
+
     def section_two():
         for victim, counter in count.items(): # need to access the items inside count, which contains the victims/users who were switched to
             end_of_sentence = str(counter) + (" time\n" if counter == 1 else " times\n")
@@ -143,7 +153,7 @@ def root_users():
                     #print("    ", user, "tried to switch to") # C.1.
                     section_two()
         else:
-            log.write("    No one switched users\n")
+            log.write("   No one switched users\n")
             #print("    No one switched users") # C.1.
 
         start_date += timedelta(days=1)
