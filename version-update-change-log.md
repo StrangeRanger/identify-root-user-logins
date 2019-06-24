@@ -1,6 +1,9 @@
 # Cronjob and Main Change/Update Log (Debian-Ubuntu Change Log) (major.minor.revision)
 Current main version: 3.9.1
-Current cron version: 2.8.1
+Current cron version: 2.9.0
+
+## Cronjob: 2.9.0
+- Merged fixes for/from Main: 3.9.0 & 3.9.1 into Cronjob
 
 ## Main: 3.9.1
 - Fixed a bug the produced an error when auth.log.1 did not exist
