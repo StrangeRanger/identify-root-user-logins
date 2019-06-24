@@ -17,5 +17,7 @@ A clear and concise description of what the flaw is.
  - Linux OS [e.g. Debian] (optional)
  - Version [e.g. 10 (Buster)] (optional)
 
->**IMPORTANT**
->Add this issue to a project that corresponds to the branch that you are having the issue on (e.g. [Debian-10](https://github.com/StrangeRanger/identify-root-user-logins/projects/6), [Debian-Ubuntu](https://github.com/StrangeRanger/identify-root-user-logins/projects/7). By default, no projects are selected
+*********************************************************************************************************
+IMPORTANT (DELETE BEFORE POSTING ISSUE)
+Add this issue to a project that corresponds to the branch that you are having the issue on (e.g. Debian-10 (https://github.com/StrangeRanger/identify-root-user-logins/projects/6), Debian-Ubuntu (https://github.com/StrangeRanger/identify-root-user-logins/projects/7). By default, no projects are selected.
+**********************************************************************************************************
