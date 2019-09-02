@@ -51,7 +51,3 @@ The script was created for the purpose of identifying users, on a linux based sy
 - Redhat
   - DOES NOT WORK
 - "More will be tested in the future"
-
-# Other
-## Cronjob Script Notes
-This script and everything about the cronjob version is a little bit of a mess. Though the script works and does what it needs to do, the setup of everything it crud. I plan on making a big update to this in the future
