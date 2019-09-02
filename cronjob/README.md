@@ -37,3 +37,5 @@ Here are a few links to help you get started in setting up with SMTP
 # Other Notes
 ## Script Notes
 By default, the auth.log will only be scanned for logs written on the current day and the day before. If the time that the cronjob is executed is based off of when they. If you wish to change the number of days, change the value of N in the script.
+## General Notes
+This script and everything about the cronjob version is a little bit of a mess. Though the script works and does what it needs to do, the setup of everything it crud. I plan on making a big update to this in the future
